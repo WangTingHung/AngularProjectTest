@@ -1,5 +1,8 @@
-# AngularProjectTest
+# 內容說明
+1. 使用npm install 安裝相關的modules檔
+2. 主要可以參考網頁中 [傳遞參數參考網站] 以下的範例，主要做參數傳遞的練習
 
+# AngularProjectTest
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.9.
 
 ## Development server
