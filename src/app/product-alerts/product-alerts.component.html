@@ -1,0 +1,7 @@
+<!-- <p *ngIf="product.price > 700">
+    <button>Notify >700 </button>
+</p> -->
+
+<p *ngIf="product.price > 700">
+  <button (click)="notify.emit()">提醒</button>
+</p>

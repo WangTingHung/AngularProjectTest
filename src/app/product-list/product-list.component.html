@@ -1,0 +1,93 @@
+<p>
+  product-list works!
+</p>
+
+<div *ngFor="let product of products">
+    <ul>
+      <li>
+          {{ product.name }} / {{product.price}} / {{product.description }}
+      </li>
+    </ul>
+</div>
+
+
+<div *ngFor="let product of products ; index as productId ">
+    <a [title]="product.name +' detail link '" [routerLink] = "['/products' ,productId]">{{ product.name }}</a><span> - </span>
+    <p *ngIf = "product.price ==300; else elseBlock">{{ product.name }} - price=300 </p> <!-- 不知為啥會換行? -->
+    <p><ng-template #elseBlock>  {{ product.name }} - price!=300 Else的其他資訊  .</ng-template></p> <!-- 為 else的 呈現畫面 -->
+
+    <button (click)="share(product.name)">Share</button>
+    <app-product-alerts [product]="product" (notify)="onNotify()"></app-product-alerts> <!-- 使用input 綁定物件 ,要綁定的規則和元件寫在html裡 --> 
+    
+</div>
+<hr>
+<button type="button"  [routerLink] = "['/regions']">Region</button>
+<hr>
+<button mat-raised-button (click)="openDialog()">Open Dialog</button>
+<hr>
+<!-- <button type="button"  [routerLink] = "['/table-sort']">Sort</button> -->
+<hr>
+<button type="button"  [routerLink] = "['/hero']">ngModel</button>
+<!-- <div>
+  <label>name:
+    <input [(ngModel)]="hero.name" placeholder="name"/>
+  </label>
+</div> -->
+<hr>
+<app-heroes></app-heroes>
+<hr>
+<a href="https://blog.csdn.net/kuangshp128/article/details/71172934" target="_blank">傳遞參數參考網站</a>
+<hr>
+<h3>參數傳遞方法一 : 父組件通過屬性綁定到子組件，子組件通過事件傳遞參數到父組件</h3>
+<h4>用 @Input() / @Output() </h4>
+<h5>在父層用子層的foo2 綁定父層的 bar($event) 來接收事件; 子層用@Output() foo2 將事件傳給父層</h5>
+<h5>在父層用子層的names 綁定父層的 物件 item; 子層用@Input() names 接收父層的物件資料</h5>
+<p>PS: 記得開console</p>
+  <li *ngFor="let item of dataSet;let i = index">
+  <span>{{item.name}}</span>[ index: {{i+1}}  /  id: {{item.id}} ]
+  <app-variable-test1 [names]="item" (foo2)="bar($event)"></app-variable-test1>
+</li>
+
+<hr>
+<h3>參數傳遞方法二 : 使用局部變量獲取子組件的引用</h3>
+<h4>用 #fatherHi 標示子層的元件, 直接在父層寫事件後用標籤調用子層的方法</h4>
+<h4>在父層用子層的names 綁定父層的 物件 item; 子層用@Input() names 接收父層的物件資料 </h4>
+<p>PS: 點擊名子看結果</p>
+<li *ngFor="let item of dataSet">
+  <app-variable-test2 [names] = "item" (click)="fatherHi.childFn()" #fatherHi></app-variable-test2>
+</li>
+
+<hr>
+<h3>參數傳遞方法三 : 使用 @ViewChild 獲取子組件的引用</h3>
+<h4>@ViewChild(VariableTest3Component) child: VariableTest3Component; 然後直接調用父層的方法</h4>
+<h5>注意此方法與上面有點不太ㄧ樣(待釐清),觸發的事件沒辦法針對當下的事件去觸發 (PS: 點擊名子試試看) </h5>
+<li *ngFor="let item of dataSet">
+  <app-variable-test3 [names] = "item" (click)="father(item)"></app-variable-test3>
+</li>
+
+<hr>
+<h3>參數傳遞方法四 : 使用 中間人模式 , 兩個componment 運用兩個的共同父組件傳遞 </h3>
+<h4>共同的元件: product-list ,2個元件 variable-test41 & variable-test42</h4>
+<h4>將test41 的值傳給 product-list, 再由product-list 傳給test42 </h4>
+<app-variable-test41 (outcom1Fn)= appFn($event)></app-variable-test41>
+<app-variable-test42 [com2] = "com1Tocom2"></app-variable-test42>
+
+<hr>
+<h3>參數傳遞方法五 : 運用service </h3>
+<h4>Check FatherServiceComComponent</h4>
+<button type="button"  [routerLink] = "['/father']">Get By Service</button>
+
+<hr>
+<h3>參數傳遞方法六 : 父組件傳遞數據到子組件中，子組件接受數據，用get & set </h3>
+<h4>child的set & get 的function要對應父層所綁定的參數, 如果子層的get沒設定,就無法直接用父層所綁定的變數取出</h4>
+<app-child-com-demo [inputyy]="data"></app-child-com-demo>
+
+<hr>
+<h3>參數傳遞方法七 : 將父組件當做服務注入到子組件中 </h3>
+<h4>子層直接用注入的父層service取資料</h4>
+<h4>Check FatherAsServiceComponent</h4>
+<button type="button"  [routerLink] = "['/fatherAsService']">Father As Service</button>
+
+<hr>
+<h3>測試 ngOnChange </h3>
+<app-test-on-change-child [iCounter] = "counter" ></app-test-on-change-child>
